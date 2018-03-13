@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>crud.</title>
+
+	<style>
+	    input[type='submit'], button, [aria-label]{
+	      cursor: pointer;
+	    }
+	    #spoiler{
+	      display: none;
+	    }
+	</style>
+</head>
+<body>
+	<form action='javascript:void(0);' method="POST" onsubmit="app.Add()">
+		<input type="text" id="country-name" placeholder="New country">
+		<input type="submit" value="Add">
+	</form>
+
+
+	<div id='spoiler'>
+		<form action='javascript:void(0);' method='POST' id='saveEdit'>
+			<input type="text" id='edit-country-name'>
+			<input type="submit" name="Edit"/>
+				<a onclick="CloseInput()" aria-label='Close'>&#10006;</a>
+		</form>
+	</div>	
+
+	<p id="counter"></p>
+
+	<table>
+		<tr>
+			<th>Name</th>
+		</tr>
+		<tbody id='countries'>
+		</tbody>
+	</table>
+
+	<script>
+		var app = new function() {
+			this.el = document.getElementById('countries')
+			this.countries = ['France', 'Germany', 'England', 'Spain', 'Belgium', 'Italy', 'Portugal', 'Irland', 'Luxembourg']
+
+			this.fechAll = function() {
+				// body...
+				var data = ''
+				// if(this.countries.length > 0) {
+					for (var i = 0; i < this.countries.length; i++) {
+						data +='<tr>'
+						data += '<td>'+ this.countries[i] +'</td>'
+						data += '<td><button onclick="app.Edit('+ i +')">Edit</button></td>'
+
+						data += '<td><button onclick="app.Delete('+ i +')">Delete</button></td>'
+						data +='</tr>'
+					}
+
+					this.Count(this.countries.length)
+					// console.log(data)
+
+					return this.el.innerHTML = data
+					// this.countries.map(function(i) {
+						// data +='<tr>'
+						// data += '<td>'+ i. +'</td>'
+						// data +='</tr>'
+
+					// })
+				// }
+			}
+
+
+			this.Count = function(data) {
+				var el = document.getElementById('counter')
+				var name = ''
+
+				if(data) {
+					if(data > 1) {
+						name = 'countries'
+					} else {
+						name = 'country'
+					}
+
+					el.innerHTML = data +' '+ name
+				} else {
+					el.innerHTML = 'No countries.'
+				}
+			}
+
+
+			this.Add = function() {
+				var el = document.getElementById('country-name')
+
+				// console.log(el.value)
+				var countryDataInput = el.value
+
+				if(countryDataInput) {
+					this.countries.push(countryDataInput)
+
+					el.value = '' // Reset input value.
+
+					// Show the new List.
+					this.fechAll()
+				}
+			}
+
+
+			this.Edit = function(item) {
+				var el = document.getElementById('edit-country-name')
+
+			    // Display value in the field
+				el.value = this.countries[item]
+				// Display fields.
+				document.getElementById('spoiler').style.display = 'block'
+
+				self = this
+				document.getElementById('saveEdit').onsubmit = function() {
+					var country = el.value
+
+					if(country) {
+						// Edit value in List countries.
+						self.countries.splice(item, 1, country.trim());
+
+						// Display the new List.
+						self.fechAll();
+
+						// Hide fields.
+						CloseInput();
+					}
+				}
+			}
+
+
+			this.Delete = function(item) {
+				// Delete the current row.
+				this.countries.splice(item, 1)
+
+				// Display the new list.
+				this.fechAll();
+			}
+		}
+
+		console.log('----this------')
+		console.log(this.app)
+
+		console.log('----window------')
+		console.log(window.app)
+
+		console.log('----self------')
+		console.log(self.app)
+
+		// console.log(document.getElementById('spoiler').style)
+
+		app.fechAll()
+
+		function CloseInput() {
+			document.getElementById('spoiler').style.display = 'none'
+		}
+	</script>
+</body>
+</html>
