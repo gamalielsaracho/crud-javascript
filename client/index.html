@@ -4,12 +4,12 @@
 	<meta charset="UTF-8">
 
 	<title>crud.</title>
-
 	<style>
 	    input[type='submit'], button, [aria-label]{
 	      cursor: pointer;
 	    }
-	    #spoiler{
+
+	    #spoiler {
 	      display: none;
 	    }
 	</style>
@@ -27,7 +27,7 @@
 			<input type="submit" name="Edit"/>
 				<a onclick="CloseInput()" aria-label='Close'>&#10006;</a>
 		</form>
-	</div>	
+	</div>
 
 	<p id="counter"></p>
 
@@ -50,7 +50,7 @@
 				// if(this.countries.length > 0) {
 					for (var i = 0; i < this.countries.length; i++) {
 						data +='<tr>'
-						data += '<td>'+ this.countries[i] +'</td>'
+						data += '<td id="texto-animado" >'+ this.countries[i] +'</td>'
 						data += '<td><button onclick="app.Edit('+ i +')">Edit</button></td>'
 
 						data += '<td><button onclick="app.Delete('+ i +')">Delete</button></td>'
@@ -98,10 +98,12 @@
 				if(countryDataInput) {
 					this.countries.push(countryDataInput)
 
+
 					el.value = '' // Reset input value.
 
 					// Show the new List.
 					this.fechAll()
+					// document.getElementById('texto-animado').style.color = 'red'
 				}
 			}
 
